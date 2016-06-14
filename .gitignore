@@ -1,0 +1,12 @@
+light_emmiter/Library/*
+light_emmiter/Temp/*
+light_emmiter/Assembly-CSharp.csproj
+
+light_emmiter/light_emmiter
+
+*.csproj
+
+light_emmiter/obj/*
+light_emmiter/light_emmiter.userprefs
+
+light_emmiter/light_emmiter.sln
