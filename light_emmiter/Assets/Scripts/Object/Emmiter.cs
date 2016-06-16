@@ -3,15 +3,16 @@ using System.Collections;
 
 public class Emmiter : BaseCDObj {
 
+    public Emmiter()
+        : base(ObjectType.Emmiter)
+    {
+    }
+
 	private int m_PressedFingerID = 0;
 
 	private float m_TimePress = 0f;
 
 	private bool m_IsPressing = false;
-	// Use this for initialization
-	void Start () {
-        
-	}
 	
 	// Update is called once per frame
 	void Update () {
@@ -61,7 +62,7 @@ public class Emmiter : BaseCDObj {
         LightPlus lo = lpo.GetComponent<LightPlus>();
         lo.Dir = this.Dir;
         lo.Pos = this.Pos;
-        lo.Speed = 1f;
+        lo.Speed = 5f;
 		m_IsPressing = false;
 	}
 }

@@ -9,7 +9,7 @@ public class Game : MonoBehaviour {
     private List<BaseCDObj> m_CDObjs = new List<BaseCDObj>();
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         Instance = this;
 	}
 	
@@ -27,5 +27,22 @@ public class Game : MonoBehaviour {
         }
 
         m_CDObjs.Add(o);
+    }
+
+    public void UnRegObject(BaseCDObj o)
+    {
+        CommonUtil.CommonLogger.Log("Object UnReg " + o.gameObject.name);
+        m_CDObjs.Remove(o);
+    }
+
+    public void CheckCD(BaseCDObj o)
+    {
+        foreach (BaseCDObj obj in m_CDObjs)
+        {
+            if (!o.Released && o != obj)
+            {
+                obj.CheckCD(o);
+            }
+        }
     }
 }
