@@ -7,6 +7,7 @@ public class LightPlus : BaseCDObj {
     {
         Flying,
         Ending,
+        Starting,
     }
 
     public LightPlus() : base(ObjectType.LightPlus)
@@ -29,15 +30,40 @@ public class LightPlus : BaseCDObj {
 
     private RunningState m_CurState = RunningState.Flying;
     private Vector3 m_EndPos;
+    private Vector3 m_StartPos;
+    private float m_DestLength;
+
+    public static LightPlus GenLightPlus()
+    {
+        GameObject lpo = CommonUtil.ResourceMng.Instance.GetResource("Object/LightPlus", CommonUtil.ResourceType.Model) as GameObject;
+        LightPlus lo = lpo.GetComponent<LightPlus>();
+        return lo;
+    }
 
 	// Update is called once per frame
 	void Update () {
-		if (Speed > 0.1f)
-			gameObject.transform.position += Time.deltaTime * Speed * gameObject.transform.forward;
+        if (m_CurState != RunningState.Starting)
+        {
+            if (Speed > 0.1f)
+                gameObject.transform.position += Time.deltaTime * Speed * gameObject.transform.forward;
+        }
+        else
+        {
+            Length += (Time.deltaTime * Speed * gameObject.transform.forward).magnitude;
+            if (Length >= m_DestLength)
+            {
+                Length = m_DestLength;
+                m_CurState = RunningState.Flying;
+            }
+        }
 
-        if (m_CurState == RunningState.Flying)
+        if (m_CurState == RunningState.Flying || m_CurState == RunningState.Starting)
         {
             Game.Instance.CheckCD(this);
+            if (m_CurState == RunningState.Starting)
+            {
+                DoStarting();
+            }
         }
         else if (m_CurState == RunningState.Ending)
         {
@@ -51,6 +77,16 @@ public class LightPlus : BaseCDObj {
     {
         m_EndPos = end_pos;
         m_CurState = RunningState.Ending;
+    }
+
+    public void StartAt(Vector3 start_pos, float dest_len)
+    {
+        Pos = start_pos;
+        m_StartPos = start_pos;
+        m_CurState = RunningState.Starting;
+        m_DestLength = dest_len;
+
+        Length = 0f;
     }
 
     private void CheckBoard()
@@ -72,5 +108,9 @@ public class LightPlus : BaseCDObj {
 
         if (Length < Vector3.kEpsilon)
             Release();
+    }
+
+    void DoStarting()
+    {
     }
 }

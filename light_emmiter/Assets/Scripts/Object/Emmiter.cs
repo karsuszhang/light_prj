@@ -58,8 +58,7 @@ public class Emmiter : BaseCDObj {
 
 	void ReleaseLight()
 	{
-        GameObject lpo = CommonUtil.ResourceMng.Instance.GetResource("Object/LightPlus", CommonUtil.ResourceType.Model) as GameObject;
-        LightPlus lo = lpo.GetComponent<LightPlus>();
+        LightPlus lo = LightPlus.GenLightPlus();
         lo.Dir = this.Dir;
         lo.Pos = this.Pos;
         lo.Speed = 5f;

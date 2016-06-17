@@ -1,10 +1,16 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Block : BaseCDObj {
+public class Receiver : BaseCDObj {
 
-    public Block() : base(ObjectType.Block)
+    [SerializeField]
+    public int DestCount = 1;
+
+
+    private int m_CurCount = 0;
+    public Receiver() : base(ObjectType.Receiver)
     {
+        
     }
 	
 	// Update is called once per frame
@@ -25,7 +31,10 @@ public class Block : BaseCDObj {
 
             if (final.collider != null)
             {
-                (c as LightPlus).EndAt(final.point);
+                (c as LightPlus).Release();
+                m_CurCount++;
+                if (m_CurCount >= DestCount)
+                    Release();
             }
         }
     }

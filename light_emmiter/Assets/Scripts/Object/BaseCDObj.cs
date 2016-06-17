@@ -8,6 +8,7 @@ public enum ObjectType
     Emmiter,
     Block,
     Reflector,
+    Receiver,
 }
 
 public class BaseCDObj : MonoBehaviour {
@@ -73,5 +74,20 @@ public class BaseCDObj : MonoBehaviour {
     {
         Released = true;
         CommonUtil.ResourceMng.Instance.Release(this.gameObject);
+    }
+
+    public static void FindNearestCD(Ray r, Collider[] cds, float lenght, out RaycastHit final_info)
+    {
+        final_info = new RaycastHit();
+        float len = 999999f;
+        foreach(Collider cd in cds)
+        {
+            RaycastHit info;
+            if (cd.Raycast(r, out info, lenght))
+            {
+                if (info.distance < len)
+                    final_info = info;
+            }
+        }
     }
 }
