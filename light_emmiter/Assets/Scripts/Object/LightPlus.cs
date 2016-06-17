@@ -12,6 +12,7 @@ public class LightPlus : BaseCDObj {
 
     public LightPlus() : base(ObjectType.LightPlus)
     {
+        LightColor = Color.white;
     }
 
 	public float Speed = 0f;
@@ -27,6 +28,8 @@ public class LightPlus : BaseCDObj {
             this.gameObject.transform.localScale = new Vector3(this.gameObject.transform.localScale.x, this.gameObject.transform.localScale.y, value);
         }
     }
+
+    public Color LightColor{get; private set;}
 
     private RunningState m_CurState = RunningState.Flying;
     private Vector3 m_EndPos;
@@ -60,10 +63,6 @@ public class LightPlus : BaseCDObj {
         if (m_CurState == RunningState.Flying || m_CurState == RunningState.Starting)
         {
             Game.Instance.CheckCD(this);
-            if (m_CurState == RunningState.Starting)
-            {
-                DoStarting();
-            }
         }
         else if (m_CurState == RunningState.Ending)
         {
@@ -110,7 +109,24 @@ public class LightPlus : BaseCDObj {
             Release();
     }
 
-    void DoStarting()
+    public void SetColor(Color c)
     {
+        MeshRenderer[] mrs = gameObject.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mr in mrs)
+        {
+            if (mr.material != null)
+            {
+                mr.material.SetColor("_Color", c);
+            }
+        }
+
+        Light[] ls = gameObject.GetComponentsInChildren<Light>();
+
+        foreach (Light l in ls)
+        {
+            l.color = c;
+        }
+
+        LightColor = c;
     }
 }

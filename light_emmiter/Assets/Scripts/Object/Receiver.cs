@@ -31,7 +31,7 @@ public class Receiver : BaseCDObj {
 
             if (final.collider != null)
             {
-                (c as LightPlus).Release();
+                (c as LightPlus).EndAt(final.point);
                 m_CurCount++;
                 if (m_CurCount >= DestCount)
                     Release();

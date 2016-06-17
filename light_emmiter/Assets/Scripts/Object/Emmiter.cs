@@ -3,6 +3,8 @@ using System.Collections;
 
 public class Emmiter : BaseCDObj {
 
+    public Color LightColor = Color.white;
+
     public Emmiter()
         : base(ObjectType.Emmiter)
     {
@@ -62,6 +64,7 @@ public class Emmiter : BaseCDObj {
         lo.Dir = this.Dir;
         lo.Pos = this.Pos;
         lo.Speed = 5f;
+        lo.SetColor(LightColor);
 		m_IsPressing = false;
 	}
 }
