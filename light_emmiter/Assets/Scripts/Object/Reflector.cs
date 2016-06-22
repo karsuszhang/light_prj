@@ -50,7 +50,7 @@ public class Reflector : BaseCDObj
                 rl.StartAt(final.point, old.Length);
                 rl.Dir = final.normal;
                 rl.Speed = old.Speed;
-                rl.SetColor(old.LightColor);
+                rl.SetColor(old.LightColor, old.LightIntensity);
 
                 rl.gameObject.transform.RotateAround(rl.Pos, Vector3.up, (180f - Mathf.Rad2Deg * angle) * (d < 0 ? 1f : -1f));
             }

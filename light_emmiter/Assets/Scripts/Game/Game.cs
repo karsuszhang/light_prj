@@ -31,14 +31,17 @@ public class Game : MonoBehaviour {
 
     public void UnRegObject(BaseCDObj o)
     {
-        CommonUtil.CommonLogger.Log("Object UnReg " + o.gameObject.name);
+        //CommonUtil.CommonLogger.Log("Object UnReg " + o.gameObject.name);
         m_CDObjs.Remove(o);
     }
 
-    public void CheckCD(BaseCDObj o)
+    public void CheckCD(BaseCDObj o, List<BaseCDObj> uncolliders = null)
     {
         foreach (BaseCDObj obj in m_CDObjs)
         {
+            if (uncolliders != null && uncolliders.Contains(obj))
+                continue;
+            
             if (!o.Released && o != obj)
             {
                 obj.CheckCD(o);

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class LightPlus : BaseCDObj {
 
@@ -28,13 +29,17 @@ public class LightPlus : BaseCDObj {
             this.gameObject.transform.localScale = new Vector3(this.gameObject.transform.localScale.x, this.gameObject.transform.localScale.y, value);
         }
     }
+        
 
     public Color LightColor{get; private set;}
+    public float LightIntensity{ get; private set; }
 
     private RunningState m_CurState = RunningState.Flying;
     private Vector3 m_EndPos;
     private Vector3 m_StartPos;
     private float m_DestLength;
+
+    private List<BaseCDObj> m_UnCollideObjs = new List<BaseCDObj>();
 
     public static LightPlus GenLightPlus()
     {
@@ -62,7 +67,7 @@ public class LightPlus : BaseCDObj {
 
         if (m_CurState == RunningState.Flying || m_CurState == RunningState.Starting)
         {
-            Game.Instance.CheckCD(this);
+            Game.Instance.CheckCD(this, m_UnCollideObjs);
         }
         else if (m_CurState == RunningState.Ending)
         {
@@ -109,7 +114,7 @@ public class LightPlus : BaseCDObj {
             Release();
     }
 
-    public void SetColor(Color c)
+    public void SetColor(Color c, float intensity)
     {
         MeshRenderer[] mrs = gameObject.GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer mr in mrs)
@@ -125,8 +130,15 @@ public class LightPlus : BaseCDObj {
         foreach (Light l in ls)
         {
             l.color = c;
+            l.intensity = intensity;
         }
 
+        LightIntensity = intensity;
         LightColor = c;
+    }
+
+    public void AddUnCollideObj(BaseCDObj o)
+    {
+        m_UnCollideObjs.Add(o);
     }
 }
