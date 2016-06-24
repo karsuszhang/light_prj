@@ -51,5 +51,12 @@ public class Game : MonoBehaviour {
 
     public void LevelComplete()
     {
+        GameObject button = CommonUtil.UIManager.Instance.AddUI("UI/BackButton");
+        button.GetComponent<UIButton>().onClick.Add(new EventDelegate(this.Back2Main));
+    }
+
+    public void Back2Main()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
     }
 }
