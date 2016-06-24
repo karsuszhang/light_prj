@@ -7,7 +7,10 @@ public class Block : BaseCDObj {
     public float BlockThreshold = 1f;
 
     [SerializeField]
-    public int MaxReflectNum = 3;
+    public int MinReflectNum = 2;
+
+    [SerializeField]
+    public int MaxReflectNum = 5;
 
     private const float MinLightIntensity = 0.1f;
 
@@ -37,7 +40,7 @@ public class Block : BaseCDObj {
                 lp.EndAt(final.point);
                 if (lp.LightIntensity >= 1f)
                 {
-                    int lightnum = GameHelper.Random(1, MaxReflectNum + 1);
+                    int lightnum = GameHelper.Random(MinReflectNum, MaxReflectNum + 1);
                     float total_intensity = lp.LightIntensity;
                     float intentsity4cal = total_intensity;
                     float angle = Mathf.Acos(Vector3.Dot(final.normal, lp.Dir));
@@ -55,7 +58,7 @@ public class Block : BaseCDObj {
                         LightPlus rl = LightPlus.GenLightPlus();
                         rl.StartAt(final.point, lp.Length);
                         rl.Dir = -lp.Dir;
-                        rl.Speed = lp.Speed * ratio;
+                        rl.Speed = 3f;
                         rl.SetColor(lp.LightColor * ratio, intensity);
 
                         float max_angle = (270f - Mathf.Rad2Deg * angle);

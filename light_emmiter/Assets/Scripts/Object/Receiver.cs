@@ -43,7 +43,10 @@ public class Receiver : BaseCDObj {
                 (c as LightPlus).EndAt(final.point);
                 m_CurCount++;
                 if (m_CurCount > DestCount)
+                {
                     m_CurCount = DestCount;
+                    Game.Instance.LevelComplete();
+                }
 
                 float ratio = (float)m_CurCount / DestCount;
 
