@@ -22,4 +22,9 @@ public class Main : MonoBehaviour {
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Level2");
     }
+
+    public void LoadLevel3()
+    {
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level3");
+    }
 }
