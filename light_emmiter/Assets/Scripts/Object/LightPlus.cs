@@ -36,7 +36,7 @@ public class LightPlus : BaseCDObj {
 
     private RunningState m_CurState = RunningState.Flying;
     private Vector3 m_EndPos;
-    private Vector3 m_StartPos;
+    //private Vector3 m_StartPos;
     private float m_DestLength;
 
     private List<BaseCDObj> m_UnCollideObjs = new List<BaseCDObj>();
@@ -86,7 +86,7 @@ public class LightPlus : BaseCDObj {
     public void StartAt(Vector3 start_pos, float dest_len)
     {
         Pos = start_pos;
-        m_StartPos = start_pos;
+        //m_StartPos = start_pos;
         m_CurState = RunningState.Starting;
         m_DestLength = dest_len;
 

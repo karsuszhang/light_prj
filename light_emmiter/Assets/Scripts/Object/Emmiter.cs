@@ -88,6 +88,11 @@ public class Emmiter : BaseCDObj {
 	void ReleaseLight()
 	{
         float ratio = m_TimeCount / MaxIntensityTime;
+        ReleaseLight(ratio);
+	}
+
+    public void ReleaseLight(float ratio)
+    {
         Color c = HSBColor.Lerp(m_BaseColor, LightColor, ratio);
 
         LightPlus lo = LightPlus.GenLightPlus();
@@ -95,9 +100,15 @@ public class Emmiter : BaseCDObj {
         lo.Pos = this.Pos;
         lo.Speed = MinLightSpeed + ratio * (MaxLightSpeed - MinLightSpeed);
         lo.SetColor(c, ratio * MaxLightIntensity);
-		m_IsPressing = false;
+        m_IsPressing = false;
 
         m_TimeCount = 0f;
         gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor", m_BaseColor);
-	}
+    }
+
+    public void SetColorLerp(float ratio)
+    {
+        Color c = HSBColor.Lerp(m_BaseColor, LightColor, ratio);
+        gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor", c);
+    }
 }
