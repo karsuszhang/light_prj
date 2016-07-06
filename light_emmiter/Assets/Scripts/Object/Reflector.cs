@@ -33,13 +33,13 @@ public class Reflector : BaseCDObj
                 {
                     if (Vector3.Dot(final.normal, this.Dir) < 0)
                     {
-                        (c as LightPlus).EndAt(final.point);
+                        (c as LightPlus).EndAt(final.point, this);
                         return;
                     }
                    
                 }
                 LightPlus old = (c as LightPlus);
-                old.EndAt(final.point);
+                old.EndAt(final.point, this);
                 Vector3 org_dir = old.Dir;
                 float angle = Mathf.Acos(Vector3.Dot(final.normal, org_dir));
                 //CommonUtil.CommonLogger.Log("org cos " + angle + " deg " + Mathf.Rad2Deg * angle);

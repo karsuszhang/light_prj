@@ -9,7 +9,7 @@ public class InputMover : MonoBehaviour
     private Vector3 Dir = Vector3.zero;
 	// Use this for initialization
 	void Start () {
-	
+        GameObject.FindObjectOfType<FollowCamera>().RegFollowObj(this.gameObject);
 	}
 	
 	// Update is called once per frame

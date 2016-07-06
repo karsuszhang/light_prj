@@ -10,3 +10,6 @@ light_emmiter/obj/*
 light_emmiter/light_emmiter.userprefs
 
 light_emmiter/light_emmiter.sln
+light_emmiter/Assets/Standard Assets/*
+light_emmiter/Assets/Editor/ImageEffects/*
+light_emmiter/Assets/Standard Assets.meta

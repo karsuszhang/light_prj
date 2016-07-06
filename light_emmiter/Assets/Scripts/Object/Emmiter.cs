@@ -17,6 +17,9 @@ public class Emmiter : BaseCDObj {
     [SerializeField]
     public float MaxLightIntensity = 2f;
 
+    [SerializeField]
+    public bool ManualAble = false;
+
     private float m_TimeCount = 0f;
     private Color m_BaseColor;
     public Emmiter()
@@ -29,10 +32,12 @@ public class Emmiter : BaseCDObj {
 
 	private bool m_IsPressing = false;
 	
+    private Vector3 m_PressPos = Vector3.zero;
+    private Vector3 m_PressDelta = Vector3.zero;
     protected override void _Start()
     {
         base._Start();
-        m_BaseColor = this.gameObject.GetComponentInChildren<MeshRenderer>().material.GetColor("_EmissionColor");
+        m_BaseColor = this.gameObject.GetComponentInChildren<MeshRenderer>().material.GetColor("_Color");
     }
 	// Update is called once per frame
 	void Update () {
@@ -43,11 +48,32 @@ public class Emmiter : BaseCDObj {
                 m_TimeCount = MaxIntensityTime;
 
             Color c = HSBColor.Lerp(m_BaseColor, LightColor, m_TimeCount / MaxIntensityTime);
-            gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor", c);
+            gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", c);
         }
 		CheckKeyBoard ();
 		CheckTouch ();
+        CheckMouse();
+
+        CheckRotate();
 	}
+
+    void CheckMouse()
+    {
+        if (m_IsPressing)
+        {
+            m_PressDelta = Input.mousePosition - m_PressPos;
+            m_PressPos = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            m_IsPressing = true;
+            m_PressPos = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonUp(0))
+            ReleaseLight ();
+    }
 
 	void CheckKeyBoard()
 	{
@@ -70,6 +96,7 @@ public class Emmiter : BaseCDObj {
                 {
                     m_PressedFingerID = t.fingerId;
                     m_IsPressing = true;
+                    m_PressPos = t.position;
                     break;
                 }
             }
@@ -82,8 +109,24 @@ public class Emmiter : BaseCDObj {
                     break;
                 }
             }
+            else if (t.phase == TouchPhase.Moved)
+            {
+                if (m_PressedFingerID == t.fingerId)
+                {
+                    m_PressDelta = (Vector3)t.position - m_PressPos;
+                    m_PressPos = t.position;
+                }
+            }
 		}
 	}
+
+    void CheckRotate()
+    {
+        if (!ManualAble || !m_IsPressing)
+            return;
+
+        this.transform.Rotate(Vector3.up, m_PressDelta.x);
+    }
 
 	void ReleaseLight()
 	{
@@ -103,12 +146,12 @@ public class Emmiter : BaseCDObj {
         m_IsPressing = false;
 
         m_TimeCount = 0f;
-        gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor", m_BaseColor);
+        gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", m_BaseColor);
     }
 
     public void SetColorLerp(float ratio)
     {
         Color c = HSBColor.Lerp(m_BaseColor, LightColor, ratio);
-        gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor", c);
+        gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", c);
     }
 }

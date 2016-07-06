@@ -40,7 +40,7 @@ public class Receiver : BaseCDObj {
 
             if (final.collider != null)
             {
-                (c as LightPlus).EndAt(final.point);
+                (c as LightPlus).EndAt(final.point, this);
                 m_CurCount++;
                 if (m_CurCount > DestCount)
                 {
@@ -50,10 +50,11 @@ public class Receiver : BaseCDObj {
 
                 float ratio = (float)m_CurCount / DestCount;
 
-                Color co = HSBColor.Lerp(m_Color, (c as LightPlus).LightColor, ratio);
-                gameObject.GetComponentInChildren<Light>().color = co;
+                Color org_color = (c as LightPlus).LightColor;
+                Color co = /*GameHelper.LerpColorByMainColor(m_Color, org_color, ratio)*/HSBColor.Lerp(m_Color, org_color, ratio);
+                gameObject.GetComponentInChildren<Light>().color = org_color;
                 gameObject.GetComponentInChildren<Light>().intensity = m_BaseIntensity + ratio * (DestIntensity - m_BaseIntensity);
-                gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_EmissionColor", co);
+                gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", co);
                 //if (m_CurCount >= DestCount)
                 //    Release();
             }

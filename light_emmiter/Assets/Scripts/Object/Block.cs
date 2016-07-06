@@ -37,7 +37,7 @@ public class Block : BaseCDObj {
             if (final.collider != null)
             {
                 LightPlus lp = (c as LightPlus);
-                lp.EndAt(final.point);
+                lp.EndAt(final.point, this);
                 if (lp.LightIntensity >= 1f)
                 {
                     int lightnum = GameHelper.Random(MinReflectNum, MaxReflectNum + 1);
@@ -58,7 +58,7 @@ public class Block : BaseCDObj {
                         LightPlus rl = LightPlus.GenLightPlus();
                         rl.StartAt(final.point, lp.Length);
                         rl.Dir = -lp.Dir;
-                        rl.Speed = 3f;
+                        rl.Speed = Mathf.Max(1.5f, lp.Speed * ratio);//3f;
                         rl.SetColor(lp.LightColor * ratio, intensity);
 
                         float max_angle = (270f - Mathf.Rad2Deg * angle);

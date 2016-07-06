@@ -77,20 +77,22 @@ public class LightPlus : BaseCDObj {
         CheckBoard();
 	}
 
-    public void EndAt(Vector3 end_pos)
+    public void EndAt(Vector3 end_pos, BaseCDObj block_obj)
     {
-        m_EndPos = end_pos;
-        m_CurState = RunningState.Ending;
+        Release();
+        //m_EndPos = end_pos;
+        //m_CurState = RunningState.Ending;
     }
 
     public void StartAt(Vector3 start_pos, float dest_len)
     {
         Pos = start_pos;
-        //m_StartPos = start_pos;
-        m_CurState = RunningState.Starting;
+
+        /*m_CurState = RunningState.Starting;
         m_DestLength = dest_len;
 
-        Length = 0f;
+        Length = 0f;*/
+        Length = dest_len;
     }
 
     private void CheckBoard()
@@ -139,6 +141,7 @@ public class LightPlus : BaseCDObj {
 
     public void AddUnCollideObj(BaseCDObj o)
     {
+        //CommonUtil.CommonLogger.Log(gameObject.name + " add uco : " + o.gameObject.name);
         m_UnCollideObjs.Add(o);
     }
 }

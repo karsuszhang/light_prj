@@ -72,6 +72,10 @@ public class BaseCDObj : MonoBehaviour {
 
     public virtual void Release()
     {
+        /*if(gameObject.name.Contains("sat"))
+        {
+            GameHelper.DebugBreak(gameObject.name);
+        }*/
         Released = true;
         CommonUtil.ResourceMng.Instance.Release(this.gameObject);
     }
