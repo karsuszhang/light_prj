@@ -6,6 +6,13 @@ public class Game : MonoBehaviour {
 
     public static Game Instance = null;
 
+    public List<BaseCDObj> AllObjs
+    {
+        get
+        {
+            return m_CDObjs;
+        }
+    }
     private List<BaseCDObj> m_CDObjs = new List<BaseCDObj>();
 
 	// Use this for initialization

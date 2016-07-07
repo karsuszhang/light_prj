@@ -28,7 +28,7 @@ public class Emmiter : BaseCDObj {
         
     }
 
-	private int m_PressedFingerID = 0;
+	private int m_PressedFingerID = -1;
 
 	private bool m_IsPressing = false;
 	
@@ -50,9 +50,12 @@ public class Emmiter : BaseCDObj {
             Color c = HSBColor.Lerp(m_BaseColor, LightColor, m_TimeCount / MaxIntensityTime);
             gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", c);
         }
+        #if UNITY_EDITOR
 		CheckKeyBoard ();
-		CheckTouch ();
         CheckMouse();
+        #else
+        CheckTouch ();
+        #endif
 
         CheckRotate();
 	}
@@ -92,19 +95,20 @@ public class Emmiter : BaseCDObj {
 		{
             if (t.phase == TouchPhase.Began)
             {
-                if (m_PressedFingerID == 0)
+                if (m_PressedFingerID == -1)
                 {
                     m_PressedFingerID = t.fingerId;
                     m_IsPressing = true;
                     m_PressPos = t.position;
+                    CommonUtil.CommonLogger.Log(m_PressPos.ToString());
                     break;
                 }
             }
             else if (t.phase == TouchPhase.Canceled || t.phase == TouchPhase.Ended)
             {
-                if (m_PressedFingerID == t.fingerId)
+                if (m_PressedFingerID == t.fingerId && m_IsPressing)
                 {
-                    m_PressedFingerID = 0;
+                    m_PressedFingerID = -1;
                     ReleaseLight();
                     break;
                 }
@@ -125,7 +129,15 @@ public class Emmiter : BaseCDObj {
         if (!ManualAble || !m_IsPressing)
             return;
 
-        this.transform.Rotate(Vector3.up, m_PressDelta.x);
+        Vector3 ea = this.transform.eulerAngles;
+        if (ea.y >= 270f)
+            ea.y -= 360f;
+        
+        ea.y += m_PressDelta.x;
+        ea.y = Mathf.Max(-90f, Mathf.Min(90f, ea.y));
+        this.transform.eulerAngles = ea;
+        //CommonUtil.CommonLogger.Log("Adjust euler " + ea.y.ToString() + " after " + this.transform.eulerAngles);
+        m_PressDelta = Vector3.zero;
     }
 
 	void ReleaseLight()
@@ -143,6 +155,7 @@ public class Emmiter : BaseCDObj {
         lo.Pos = this.Pos;
         lo.Speed = MinLightSpeed + ratio * (MaxLightSpeed - MinLightSpeed);
         lo.SetColor(c, ratio * MaxLightIntensity);
+        lo.SetScale(ratio);
         m_IsPressing = false;
 
         m_TimeCount = 0f;

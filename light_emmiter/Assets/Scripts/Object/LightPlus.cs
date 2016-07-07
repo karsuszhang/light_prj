@@ -18,34 +18,56 @@ public class LightPlus : BaseCDObj {
 
 	public float Speed = 0f;
 
-    public float Length
+    public float RadiusLength
     {
         get
         {
-            return this.gameObject.transform.localScale.z;
+            if (m_SCollider != null)
+            {
+                return this.gameObject.transform.localScale.x * m_SCollider.radius * m_SCollider.gameObject.transform.localScale.x;
+            }
+            return 0.1f;
         }
-        set
+    }
+
+    public float Scale 
+    {
+        get
         {
-            this.gameObject.transform.localScale = new Vector3(this.gameObject.transform.localScale.x, this.gameObject.transform.localScale.y, value);
+            return this.gameObject.transform.localScale.x;
+        }
+        private set
+        {
+            this.gameObject.transform.localScale = new Vector3(value, value, value);
         }
     }
         
-
     public Color LightColor{get; private set;}
     public float LightIntensity{ get; private set; }
 
     private RunningState m_CurState = RunningState.Flying;
-    private Vector3 m_EndPos;
+    //private Vector3 m_EndPos;
     //private Vector3 m_StartPos;
     private float m_DestLength;
 
+    private float m_BaseScale = 1;
+    private const float MinScale = 0.6f;
+
     private List<BaseCDObj> m_UnCollideObjs = new List<BaseCDObj>();
 
+    private SphereCollider m_SCollider;
     public static LightPlus GenLightPlus()
     {
         GameObject lpo = CommonUtil.ResourceMng.Instance.GetResource("Object/LightPlus", CommonUtil.ResourceType.Model) as GameObject;
         LightPlus lo = lpo.GetComponent<LightPlus>();
         return lo;
+    }
+
+    protected override void _Start()
+    {
+        base._Start();
+        m_SCollider = GetComponentInChildren<SphereCollider>();
+        m_BaseScale = Scale;
     }
 
 	// Update is called once per frame
@@ -55,7 +77,7 @@ public class LightPlus : BaseCDObj {
             if (Speed > 0.1f)
                 gameObject.transform.position += Time.deltaTime * Speed * gameObject.transform.forward;
         }
-        else
+        /*else
         {
             Length += (Time.deltaTime * Speed * gameObject.transform.forward).magnitude;
             if (Length >= m_DestLength)
@@ -63,7 +85,7 @@ public class LightPlus : BaseCDObj {
                 Length = m_DestLength;
                 m_CurState = RunningState.Flying;
             }
-        }
+        }*/
 
         if (m_CurState == RunningState.Flying || m_CurState == RunningState.Starting)
         {
@@ -92,7 +114,7 @@ public class LightPlus : BaseCDObj {
         m_DestLength = dest_len;
 
         Length = 0f;*/
-        Length = dest_len;
+        //RadiusLength = dest_len;
     }
 
     private void CheckBoard()
@@ -103,17 +125,17 @@ public class LightPlus : BaseCDObj {
 
     void DoEnding()
     {
-        //CommonUtil.CommonLogger.Log(Vector3.Dot(Dir, (m_EndPos - Pos)).ToString());
+        /*//CommonUtil.CommonLogger.Log(Vector3.Dot(Dir, (m_EndPos - Pos)).ToString());
         if (Vector3.Dot(Dir, (m_EndPos - Pos)) < 0)
         {
             Release();
             return;
         }
 
-        this.Length = Mathf.Max(0f, (m_EndPos - Pos).magnitude);
+        this.Scale = Mathf.Max(0f, (m_EndPos - Pos).magnitude);
 
-        if (Length < Vector3.kEpsilon)
-            Release();
+        if (RadiusLength < Vector3.kEpsilon)
+            Release();*/
     }
 
     public void SetColor(Color c, float intensity)
@@ -143,5 +165,10 @@ public class LightPlus : BaseCDObj {
     {
         //CommonUtil.CommonLogger.Log(gameObject.name + " add uco : " + o.gameObject.name);
         m_UnCollideObjs.Add(o);
+    }
+
+    public void SetScale(float ratio)
+    {
+        Scale = MinScale + ratio * (m_BaseScale - MinScale);
     }
 }

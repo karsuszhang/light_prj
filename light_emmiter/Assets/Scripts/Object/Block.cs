@@ -32,7 +32,7 @@ public class Block : BaseCDObj {
             Ray r = new Ray();
             r.origin = c.Pos;
             r.direction = c.Dir;
-            FindNearestCD(r, cds, (c as LightPlus).Length, out final);
+            FindNearestCD(r, cds, (c as LightPlus).RadiusLength, out final);
 
             if (final.collider != null)
             {
@@ -56,10 +56,11 @@ public class Block : BaseCDObj {
 
                         float ratio = intensity / total_intensity;
                         LightPlus rl = LightPlus.GenLightPlus();
-                        rl.StartAt(final.point, lp.Length);
+                        rl.StartAt(final.point, lp.RadiusLength);
                         rl.Dir = -lp.Dir;
                         rl.Speed = Mathf.Max(1.5f, lp.Speed * ratio);//3f;
                         rl.SetColor(lp.LightColor * ratio, intensity);
+                        rl.SetScale(ratio);
 
                         float max_angle = (270f - Mathf.Rad2Deg * angle);
                         float a2t = GameHelper.Random(0f, max_angle);

@@ -25,7 +25,7 @@ public class Reflector : BaseCDObj
             Ray r = new Ray();
             r.origin = c.Pos;
             r.direction = c.Dir;
-            FindNearestCD(r, cds, (c as LightPlus).Length, out final);
+            FindNearestCD(r, cds, (c as LightPlus).RadiusLength, out final);
 
             if (final.collider != null)
             {
@@ -47,7 +47,7 @@ public class Reflector : BaseCDObj
                 //CommonUtil.CommonLogger.Log("cross y " + d);
 
                 LightPlus rl = LightPlus.GenLightPlus();
-                rl.StartAt(final.point, old.Length);
+                rl.StartAt(final.point, old.RadiusLength);
                 rl.Dir = final.normal;
                 rl.Speed = old.Speed;
                 rl.SetColor(old.LightColor, old.LightIntensity);

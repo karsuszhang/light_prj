@@ -36,7 +36,7 @@ public class Receiver : BaseCDObj {
             Ray r = new Ray();
             r.origin = c.Pos;
             r.direction = c.Dir;
-            FindNearestCD(r, cds, (c as LightPlus).Length, out final);
+            FindNearestCD(r, cds, (c as LightPlus).RadiusLength, out final);
 
             if (final.collider != null)
             {
