@@ -27,16 +27,7 @@ public class Block : BaseCDObj {
     {
         if (c.Type == ObjectType.LightPlus)
         {
-            Collider[] cds = gameObject.GetComponentsInChildren<Collider>();
-            RaycastHit final = new RaycastHit();
-            Ray r = new Ray();
-            r.origin = c.Pos;
-            r.direction = c.Dir;
-            FindNearestCD(r, cds, (c as LightPlus).RadiusLength, out final);
-            if (final.collider == null)
-            {
-                FindNearestCD(c.LastPos, c.Pos, cds, out final);
-            }
+            RaycastHit final = FindCollideWithLightPlus(c as LightPlus);
 
             if (final.collider != null)
             {

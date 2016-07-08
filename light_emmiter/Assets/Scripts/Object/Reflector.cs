@@ -20,12 +20,7 @@ public class Reflector : BaseCDObj
     {
         if (c.Type == ObjectType.LightPlus)
         {
-            Collider[] cds = gameObject.GetComponentsInChildren<Collider>();
-            RaycastHit final = new RaycastHit();;
-            Ray r = new Ray();
-            r.origin = c.Pos;
-            r.direction = c.Dir;
-            FindNearestCD(r, cds, (c as LightPlus).RadiusLength, out final);
+            RaycastHit final = FindCollideWithLightPlus(c as LightPlus);
 
             if (final.collider != null)
             {

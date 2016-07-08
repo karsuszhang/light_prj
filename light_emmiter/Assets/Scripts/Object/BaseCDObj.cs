@@ -84,6 +84,21 @@ public class BaseCDObj : MonoBehaviour {
         CommonUtil.ResourceMng.Instance.Release(this.gameObject);
     }
 
+    protected RaycastHit FindCollideWithLightPlus(LightPlus lp)
+    {
+        Collider[] cds = gameObject.GetComponentsInChildren<Collider>();
+        RaycastHit final = new RaycastHit();
+        Ray r = new Ray();
+        r.origin = lp.Pos;
+        r.direction = lp.Dir;
+        FindNearestCD(r, cds, lp.RadiusLength, out final);
+        if (final.collider == null)
+        {
+            FindNearestCD(lp.LastPos, lp.Pos, cds, out final);
+        }
+        return final;
+    }
+
     public static void FindNearestCD(Ray r, Collider[] cds, float lenght, out RaycastHit final_info)
     {
         final_info = new RaycastHit();
