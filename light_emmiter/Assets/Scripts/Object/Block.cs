@@ -33,6 +33,10 @@ public class Block : BaseCDObj {
             r.origin = c.Pos;
             r.direction = c.Dir;
             FindNearestCD(r, cds, (c as LightPlus).RadiusLength, out final);
+            if (final.collider == null)
+            {
+                FindNearestCD(c.LastPos, c.Pos, cds, out final);
+            }
 
             if (final.collider != null)
             {

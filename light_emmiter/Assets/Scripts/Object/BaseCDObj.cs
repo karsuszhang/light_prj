@@ -41,13 +41,17 @@ public class BaseCDObj : MonoBehaviour {
         }
         set
         {
+            LastPos = Pos;
             this.gameObject.transform.position = value;
         }
     }
 
+    public Vector3 LastPos{ get; private set; }
+
 	// Use this for initialization
 	void Start () {
         _Start();
+        LastPos = Pos;
 	}
 	
 	// Update is called once per frame
@@ -88,6 +92,24 @@ public class BaseCDObj : MonoBehaviour {
         {
             RaycastHit info;
             if (cd.Raycast(r, out info, lenght))
+            {
+                if (info.distance < len)
+                    final_info = info;
+            }
+        }
+    }
+
+    public static void FindNearestCD(Vector3 start, Vector3 end, Collider[] cds, out RaycastHit final_info)
+    {
+        Ray r = new Ray();
+        r.origin = start;
+        r.direction = (end - start).normalized;
+        final_info = new RaycastHit();
+        float len = 999999f;
+        foreach(Collider cd in cds)
+        {
+            RaycastHit info;
+            if (cd.Raycast(r, out info, (end - start).magnitude))
             {
                 if (info.distance < len)
                     final_info = info;
