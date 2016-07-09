@@ -36,7 +36,7 @@ public class LightPlus : BaseCDObj {
         {
             return this.gameObject.transform.localScale.x;
         }
-        private set
+        set
         {
             this.gameObject.transform.localScale = new Vector3(value, value, value);
         }
@@ -44,6 +44,8 @@ public class LightPlus : BaseCDObj {
         
     public Color LightColor{get; private set;}
     public float LightIntensity{ get; private set; }
+
+    public Emmiter LightEmmiter = null;
 
     private RunningState m_CurState = RunningState.Flying;
     //private Vector3 m_EndPos;
@@ -140,6 +142,7 @@ public class LightPlus : BaseCDObj {
 
     public void SetColor(Color c, float intensity)
     {
+        //CommonUtil.CommonLogger.Log(gameObject.name + " SetColor " + c.ToString());
         MeshRenderer[] mrs = gameObject.GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer mr in mrs)
         {
@@ -167,8 +170,11 @@ public class LightPlus : BaseCDObj {
         m_UnCollideObjs.Add(o);
     }
 
-    public void SetScale(float ratio)
+    public void SetScaleRatio(float ratio, bool use_min_scale)
     {
-        Scale = MinScale + ratio * (m_BaseScale - MinScale);
+        if (use_min_scale)
+            Scale = MinScale + ratio * (m_BaseScale - MinScale);
+        else
+            Scale = m_BaseScale * ratio;
     }
 }

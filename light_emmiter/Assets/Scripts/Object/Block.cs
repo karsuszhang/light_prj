@@ -12,6 +12,12 @@ public class Block : BaseCDObj {
     [SerializeField]
     public int MaxReflectNum = 5;
 
+    [SerializeField]
+    public bool AbsorbEnergy = false;
+
+    [SerializeField]
+    public float AbsorbRate = 0.2f;
+
     private const float MinLightIntensity = 0.1f;
 
     public Block() : base(ObjectType.Block)
@@ -35,8 +41,9 @@ public class Block : BaseCDObj {
                 lp.EndAt(final.point, this);
                 if (lp.LightIntensity >= 1f)
                 {
+                    float absorb_rate = AbsorbEnergy ? (1f - AbsorbRate) : 1f;
                     int lightnum = GameHelper.Random(MinReflectNum, MaxReflectNum + 1);
-                    float total_intensity = lp.LightIntensity;
+                    float total_intensity = lp.LightIntensity * absorb_rate;
                     float intentsity4cal = total_intensity;
                     float angle = Mathf.Acos(Vector3.Dot(final.normal, lp.Dir));
                     float d = Vector3.Cross(lp.Dir, final.normal).y;
@@ -49,13 +56,13 @@ public class Block : BaseCDObj {
                             intensity = intentsity4cal;
                         intentsity4cal -= intensity;
 
-                        float ratio = intensity / total_intensity;
+                        float ratio = intensity / total_intensity * absorb_rate;
                         LightPlus rl = LightPlus.GenLightPlus();
                         rl.StartAt(final.point, lp.RadiusLength);
                         rl.Dir = -lp.Dir;
                         rl.Speed = Mathf.Max(1.5f, lp.Speed * ratio);//3f;
-                        rl.SetColor(lp.LightColor * ratio, intensity);
-                        rl.SetScale(ratio);
+                        rl.SetColor(HSBColor.LerpWithMinRatio(Color.black, lp.LightColor, ratio), intensity);
+                        rl.SetScaleRatio(ratio * lp.Scale, true);
 
                         float max_angle = (270f - Mathf.Rad2Deg * angle);
                         float a2t = GameHelper.Random(0f, max_angle);

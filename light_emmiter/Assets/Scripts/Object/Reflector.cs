@@ -6,6 +6,12 @@ public class Reflector : BaseCDObj
     [SerializeField]
     public bool DoubleSideReflect = false;
 
+    [SerializeField]
+    public bool ChangeColor = false;
+
+    [SerializeField]
+    public Color ReflectColor = Color.white;
+
     public Reflector() : base(ObjectType.Reflector)
     {
         
@@ -45,7 +51,9 @@ public class Reflector : BaseCDObj
                 rl.StartAt(final.point, old.RadiusLength);
                 rl.Dir = final.normal;
                 rl.Speed = old.Speed;
-                rl.SetColor(old.LightColor, old.LightIntensity);
+                rl.SetColor(this.ChangeColor ? this.ReflectColor : old.LightColor, old.LightIntensity);
+                rl.Scale = old.Scale;
+                //CommonUtil.CommonLogger.Log("Reflect old scale " + old.Scale + " re " + rl.Scale);
 
                 rl.gameObject.transform.RotateAround(rl.Pos, Vector3.up, (180f - Mathf.Rad2Deg * angle) * (d < 0 ? 1f : -1f));
             }

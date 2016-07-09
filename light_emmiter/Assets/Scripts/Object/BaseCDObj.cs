@@ -9,6 +9,7 @@ public enum ObjectType
     Block,
     Reflector,
     Receiver,
+    EmmiterColorChanger,
 }
 
 public class BaseCDObj : MonoBehaviour {

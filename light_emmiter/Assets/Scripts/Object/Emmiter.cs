@@ -155,7 +155,8 @@ public class Emmiter : BaseCDObj {
         lo.Pos = this.Pos;
         lo.Speed = MinLightSpeed + ratio * (MaxLightSpeed - MinLightSpeed);
         lo.SetColor(c, ratio * MaxLightIntensity);
-        lo.SetScale(ratio);
+        lo.SetScaleRatio(ratio, true);
+        lo.LightEmmiter = this;
         m_IsPressing = false;
 
         m_TimeCount = 0f;
@@ -166,5 +167,10 @@ public class Emmiter : BaseCDObj {
     {
         Color c = HSBColor.LerpWithMinRatio(m_BaseColor, LightColor, ratio);
         gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", c);
+    }
+
+    public void SetBaseColor(Color c)
+    {
+        LightColor = c;
     }
 }
