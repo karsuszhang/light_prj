@@ -156,6 +156,12 @@ public struct HSBColor
         return "H:" + h + " S:" + s + " B:" + b;
     }
 
+    public static Color LerpWithMinRatio(Color a, Color b, float t, float min = 0.5f)
+    {
+        t = t * (1f - min) + min;
+        return Lerp(a, b, t);
+    }
+
     public static Color Lerp(Color a, Color b, float t)
     {
         HSBColor ha = new HSBColor(a);

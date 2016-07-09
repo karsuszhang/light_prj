@@ -46,7 +46,7 @@ public class Receiver : BaseCDObj {
                 float ratio = (float)m_CurCount / DestCount;
 
                 Color org_color = (c as LightPlus).LightColor;
-                Color co = /*GameHelper.LerpColorByMainColor(m_Color, org_color, ratio)*/HSBColor.Lerp(m_Color, org_color, ratio);
+                Color co = /*GameHelper.LerpColorByMainColor(m_Color, org_color, ratio)*/HSBColor.LerpWithMinRatio(m_Color, org_color, ratio);
                 gameObject.GetComponentInChildren<Light>().color = org_color;
                 gameObject.GetComponentInChildren<Light>().intensity = m_BaseIntensity + ratio * (DestIntensity - m_BaseIntensity);
                 gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", co);

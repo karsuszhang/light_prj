@@ -47,7 +47,7 @@ public class Emmiter : BaseCDObj {
             if (m_TimeCount >= MaxIntensityTime)
                 m_TimeCount = MaxIntensityTime;
 
-            Color c = HSBColor.Lerp(m_BaseColor, LightColor, m_TimeCount / MaxIntensityTime);
+            Color c = HSBColor.LerpWithMinRatio(m_BaseColor, LightColor, m_TimeCount / MaxIntensityTime);
             gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", c);
         }
         #if UNITY_EDITOR
@@ -148,7 +148,7 @@ public class Emmiter : BaseCDObj {
 
     public void ReleaseLight(float ratio)
     {
-        Color c = HSBColor.Lerp(m_BaseColor, LightColor, ratio);
+        Color c = HSBColor.LerpWithMinRatio(m_BaseColor, LightColor, ratio);
 
         LightPlus lo = LightPlus.GenLightPlus();
         lo.Dir = this.Dir;
@@ -164,7 +164,7 @@ public class Emmiter : BaseCDObj {
 
     public void SetColorLerp(float ratio)
     {
-        Color c = HSBColor.Lerp(m_BaseColor, LightColor, ratio);
+        Color c = HSBColor.LerpWithMinRatio(m_BaseColor, LightColor, ratio);
         gameObject.GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", c);
     }
 }
