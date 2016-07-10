@@ -12,12 +12,13 @@ public class Receiver : BaseCDObj {
     public float AbsorbRate = 0.2f;
 
     [SerializeField]
-    public float DropRate = 0.02f;
+    public float DropRate = 0.001f;
 
     private float m_BaseIntensity;
     private float m_CurIntensity;
     private MeshRenderer m_Render = null;
     private Light m_Light = null;
+    private bool Done = false;
     public Receiver() : base(ObjectType.Receiver)
     {
         
@@ -32,10 +33,12 @@ public class Receiver : BaseCDObj {
         gameObject.GetComponentInChildren<Light>().color = ReceiveColor;
         m_Render = gameObject.GetComponentInChildren<MeshRenderer>();
         m_Light = gameObject.GetComponentInChildren<Light>();
+
+        Game.Instance.RegLevelReceiver(this);
     }
 	// Update is called once per frame
 	void Update () {
-        if (m_CurIntensity > m_BaseIntensity)
+        if (m_CurIntensity > m_BaseIntensity && !Done)
         {
             m_CurIntensity = Mathf.Max(m_BaseIntensity, m_CurIntensity - DropRate);
             m_Render.material.SetFloat("_Threshold", (m_CurIntensity - m_BaseIntensity) / DestIntensity);
@@ -53,9 +56,15 @@ public class Receiver : BaseCDObj {
             {
                 LightPlus lp = (c as LightPlus);
                 lp.EndAt(final.point, this);
-                if (lp.LightColor == ReceiveColor)
+                if (lp.LightColor == ReceiveColor && !Done)
                 {
                     m_CurIntensity += lp.LightIntensity * AbsorbRate;
+
+                    if (m_CurIntensity >= DestIntensity)
+                    {
+                        Done = true;
+                        Game.Instance.ReceiverComplete(this);
+                    }
 
                     float ratio = Mathf.Min(1f, (m_CurIntensity - m_BaseIntensity) / DestIntensity);
 

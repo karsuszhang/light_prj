@@ -20,6 +20,9 @@ public class Emmiter : BaseCDObj {
     [SerializeField]
     public bool ManualAble = false;
 
+    [SerializeField]
+    public float MaxRotateAngle = 60f;
+
     private float m_TimeCount = 0f;
     private Color m_BaseColor;
     public Emmiter()
@@ -130,11 +133,11 @@ public class Emmiter : BaseCDObj {
             return;
 
         Vector3 ea = this.transform.eulerAngles;
-        if (ea.y >= 270f)
+        if (ea.y >= 180f)
             ea.y -= 360f;
         
         ea.y += m_PressDelta.x;
-        ea.y = Mathf.Max(-90f, Mathf.Min(90f, ea.y));
+        ea.y = Mathf.Max(-MaxRotateAngle, Mathf.Min(MaxRotateAngle, ea.y));
         this.transform.eulerAngles = ea;
         //CommonUtil.CommonLogger.Log("Adjust euler " + ea.y.ToString() + " after " + this.transform.eulerAngles);
         m_PressDelta = Vector3.zero;

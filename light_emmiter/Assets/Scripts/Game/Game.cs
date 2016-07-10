@@ -15,6 +15,7 @@ public class Game : MonoBehaviour {
     }
     private List<BaseCDObj> m_CDObjs = new List<BaseCDObj>();
 
+    private Dictionary<Receiver, bool> m_LevelStatus = new Dictionary<Receiver, bool>();
 	// Use this for initialization
 	void Awake () {
         Instance = this;
@@ -65,5 +66,31 @@ public class Game : MonoBehaviour {
     public void Back2Main()
     {
         UnityEngine.SceneManagement.SceneManager.LoadScene("Main");
+    }
+
+    public void RegLevelReceiver(Receiver r)
+    {
+        m_LevelStatus[r] = false;
+    }
+
+    public void ReceiverComplete(Receiver r)
+    {
+        if (!m_LevelStatus.ContainsKey(r))
+        {
+            CommonUtil.CommonLogger.LogError("Complete UnReg Receiver " + r.gameObject.name);
+            return;
+        }
+           
+        m_LevelStatus[r] = true;
+
+        bool finished = true;
+        foreach (var obj in m_LevelStatus)
+        {
+            if (!obj.Value)
+                finished = false;
+        }
+
+        if (finished)
+            LevelComplete();
     }
 }

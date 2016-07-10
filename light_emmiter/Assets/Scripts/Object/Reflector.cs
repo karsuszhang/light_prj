@@ -17,10 +17,12 @@ public class Reflector : BaseCDObj
         
     }
 
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    protected override void _Start()
+    {
+        base._Start();
+        if (ChangeColor)
+            GetComponentInChildren<MeshRenderer>().material.SetColor("_Color", ReflectColor);
+    }
 
     public override void CheckCD(BaseCDObj c)
     {
