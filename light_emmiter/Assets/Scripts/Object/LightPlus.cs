@@ -73,11 +73,11 @@ public class LightPlus : BaseCDObj {
     }
 
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
         if (m_CurState != RunningState.Starting)
         {
             if (Speed > 0.1f)
-                gameObject.transform.position += Time.deltaTime * Speed * gameObject.transform.forward;
+                this.Pos += Time.deltaTime * Speed * gameObject.transform.forward;
         }
         /*else
         {

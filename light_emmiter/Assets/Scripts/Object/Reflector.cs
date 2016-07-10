@@ -56,6 +56,7 @@ public class Reflector : BaseCDObj
                 //CommonUtil.CommonLogger.Log("Reflect old scale " + old.Scale + " re " + rl.Scale);
 
                 rl.gameObject.transform.RotateAround(rl.Pos, Vector3.up, (180f - Mathf.Rad2Deg * angle) * (d < 0 ? 1f : -1f));
+                rl.AddUnCollideObj(this);
             }
         }
     }

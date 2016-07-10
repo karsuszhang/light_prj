@@ -61,7 +61,8 @@ public class Block : BaseCDObj {
                         rl.StartAt(final.point, lp.RadiusLength);
                         rl.Dir = -lp.Dir;
                         rl.Speed = Mathf.Max(1.5f, lp.Speed * ratio);//3f;
-                        rl.SetColor(HSBColor.LerpWithMinRatio(Color.black, lp.LightColor, ratio), intensity);
+                        //rl.SetColor(HSBColor.LerpWithMinRatio(Color.black, lp.LightColor, ratio), intensity);
+                        rl.SetColor(lp.LightColor, intensity);
                         rl.SetScaleRatio(ratio * lp.Scale, true);
 
                         float max_angle = (270f - Mathf.Rad2Deg * angle);

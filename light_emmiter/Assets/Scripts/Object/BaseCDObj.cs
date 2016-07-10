@@ -96,6 +96,15 @@ public class BaseCDObj : MonoBehaviour {
         if (final.collider == null)
         {
             FindNearestCD(lp.LastPos, lp.Pos, cds, out final);
+            if (final.collider != null)
+            {
+                //CommonUtil.CommonLogger.Log(gameObject.name + " Reflect LightPlus " + lp.gameObject.name + " by two point");
+                //EditorGizmor.Instance.DrawLine(lp.LastPos, lp.Pos);
+            }
+        }
+        else
+        {
+            //CommonUtil.CommonLogger.Log(gameObject.name + " Reflect LightPlus " + lp.gameObject.name + " by normal cd");
         }
         return final;
     }

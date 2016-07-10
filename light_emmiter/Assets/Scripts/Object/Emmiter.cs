@@ -148,7 +148,7 @@ public class Emmiter : BaseCDObj {
 
     public void ReleaseLight(float ratio)
     {
-        Color c = HSBColor.LerpWithMinRatio(m_BaseColor, LightColor, ratio);
+        Color c = LightColor;//HSBColor.LerpWithMinRatio(m_BaseColor, LightColor, ratio);
 
         LightPlus lo = LightPlus.GenLightPlus();
         lo.Dir = this.Dir;
