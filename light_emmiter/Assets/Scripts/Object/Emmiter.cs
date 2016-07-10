@@ -37,10 +37,12 @@ public class Emmiter : BaseCDObj {
 	
     private Vector3 m_PressPos = Vector3.zero;
     private Vector3 m_PressDelta = Vector3.zero;
+    private Vector3 m_OrgEuler = Vector3.zero;
     protected override void _Start()
     {
         base._Start();
         m_BaseColor = this.gameObject.GetComponentInChildren<MeshRenderer>().material.GetColor("_Color");
+        m_OrgEuler = gameObject.transform.eulerAngles;
     }
 	// Update is called once per frame
 	void Update () {
@@ -133,11 +135,14 @@ public class Emmiter : BaseCDObj {
             return;
 
         Vector3 ea = this.transform.eulerAngles;
-        if (ea.y >= 180f)
-            ea.y -= 360f;
-        
-        ea.y += m_PressDelta.x;
-        ea.y = Mathf.Max(-MaxRotateAngle, Mathf.Min(MaxRotateAngle, ea.y));
+        ea.y = GameHelper.ToAbsPi(ea.y);
+
+        ea.y = GameHelper.ToAbsPi(ea.y + m_PressDelta.x);
+
+        float l_bound = Mathf.Min(GameHelper.ToAbsPi(m_OrgEuler.y - MaxRotateAngle), GameHelper.ToAbsPi(m_OrgEuler.y + MaxRotateAngle));
+        float u_bound = Mathf.Max(GameHelper.ToAbsPi(m_OrgEuler.y - MaxRotateAngle), GameHelper.ToAbsPi(m_OrgEuler.y + MaxRotateAngle));
+         
+        ea.y = Mathf.Max(l_bound, Mathf.Min(u_bound, ea.y));
         this.transform.eulerAngles = ea;
         //CommonUtil.CommonLogger.Log("Adjust euler " + ea.y.ToString() + " after " + this.transform.eulerAngles);
         m_PressDelta = Vector3.zero;

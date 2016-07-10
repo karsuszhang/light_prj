@@ -124,4 +124,15 @@ public static class GameHelper {
         Debug.Break();
         #endif
     }
+
+    public static float ToAbsPi(float angle)
+    {
+        while (angle > 180f)
+            angle -= 360f;
+
+        while (angle < -180f)
+            angle += 360f;
+
+        return angle;
+    }
 }
