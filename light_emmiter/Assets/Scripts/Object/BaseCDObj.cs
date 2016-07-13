@@ -6,6 +6,7 @@ public enum ObjectType
     None,
     LightPlus,
     Emmiter,
+    DistinguishBlock,
     Block,
     Reflector,
     Receiver,

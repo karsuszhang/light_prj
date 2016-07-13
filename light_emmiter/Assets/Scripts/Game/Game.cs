@@ -35,6 +35,17 @@ public class Game : MonoBehaviour {
         }
 
         m_CDObjs.Add(o);
+        m_CDObjs.Sort(this.SortCDObj);
+    }
+
+    int SortCDObj(BaseCDObj left, BaseCDObj right)
+    {
+        if(left.Type < right.Type)
+            return -1;
+        else if(left.Type == right.Type)
+            return 0;
+        else 
+            return 1;
     }
 
     public void UnRegObject(BaseCDObj o)

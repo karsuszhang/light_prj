@@ -137,7 +137,7 @@ public class Emmiter : BaseCDObj {
         Vector3 ea = this.transform.eulerAngles;
         ea.y = GameHelper.ToAbsPi(ea.y);
 
-        ea.y = GameHelper.ToAbsPi(ea.y + m_PressDelta.x);
+        ea.y = GameHelper.ToAbsPi(ea.y - m_PressDelta.x);
 
         float l_bound = Mathf.Min(GameHelper.ToAbsPi(m_OrgEuler.y - MaxRotateAngle), GameHelper.ToAbsPi(m_OrgEuler.y + MaxRotateAngle));
         float u_bound = Mathf.Max(GameHelper.ToAbsPi(m_OrgEuler.y - MaxRotateAngle), GameHelper.ToAbsPi(m_OrgEuler.y + MaxRotateAngle));

@@ -15,7 +15,7 @@ public class Main : MonoBehaviour {
 
     public void LoadLevel1()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Level1");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level2-1");
     }
 
     public void LoadLevel2()
@@ -25,6 +25,6 @@ public class Main : MonoBehaviour {
 
     public void LoadLevel3()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Level8");
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Level9");
     }
 }
