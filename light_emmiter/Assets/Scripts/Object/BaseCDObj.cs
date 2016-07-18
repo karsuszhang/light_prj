@@ -50,6 +50,11 @@ public class BaseCDObj : MonoBehaviour {
 
     public Vector3 LastPos{ get; private set; }
 
+    void Awake()
+    {
+        _Awake();
+    }
+
 	// Use this for initialization
 	void Start () {
         _Start();
@@ -69,6 +74,10 @@ public class BaseCDObj : MonoBehaviour {
     protected virtual void _Start()
     {
         Game.Instance.RegCDObj(this);
+    }
+
+    protected virtual void _Awake()
+    {
     }
 
     public virtual void CheckCD(BaseCDObj c)

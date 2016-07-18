@@ -13,3 +13,7 @@ light_emmiter/light_emmiter.sln
 light_emmiter/Assets/Standard Assets/*
 light_emmiter/Assets/Editor/ImageEffects/*
 light_emmiter/Assets/Standard Assets.meta
+
+light_emmiter/Assets/Resources/Shader/TestStandard.shader.meta
+
+light_emmiter/Assets/Resources/Shader/TestStandard.shader

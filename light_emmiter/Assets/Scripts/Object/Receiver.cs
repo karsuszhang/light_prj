@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public delegate void OnReceiverDestRatioChanged(float ratio, Receiver obj);
+
 public class Receiver : BaseCDObj {
+
     [SerializeField]
     public float DestIntensity = 3;
 
@@ -13,6 +16,8 @@ public class Receiver : BaseCDObj {
 
     [SerializeField]
     public float DropRate = 0.001f;
+
+    public event OnReceiverDestRatioChanged RatioChangeEvent;
 
     private float m_BaseIntensity;
     private float m_CurIntensity;
@@ -41,10 +46,18 @@ public class Receiver : BaseCDObj {
         if (m_CurIntensity > m_BaseIntensity && !Done)
         {
             m_CurIntensity = Mathf.Max(m_BaseIntensity, m_CurIntensity - DropRate);
-            m_Render.material.SetFloat("_Threshold", (m_CurIntensity - m_BaseIntensity) / DestIntensity);
+            SetRatio((m_CurIntensity - m_BaseIntensity) / DestIntensity);
             m_Light.intensity = m_CurIntensity;
         }
 	}
+
+    private void SetRatio(float r)
+    {
+        
+        gameObject.GetComponentInChildren<MeshRenderer>().material.SetFloat("_Threshold", r);
+        if (RatioChangeEvent != null)
+            RatioChangeEvent(r, this);
+    }
 
     public override void CheckCD(BaseCDObj c)
     {
@@ -59,17 +72,17 @@ public class Receiver : BaseCDObj {
                 if (lp.LightColor == ReceiveColor && !Done)
                 {
                     m_CurIntensity += lp.LightIntensity * AbsorbRate;
-
+                    //CommonUtil.CommonLogger.Log(string.Format("{0} Cur {1} Dest {2}", gameObject.name, m_CurIntensity, DestIntensity));
                     if (m_CurIntensity >= DestIntensity)
                     {
                         Done = true;
                         Game.Instance.ReceiverComplete(this);
                     }
 
-                    float ratio = Mathf.Min(1f, (m_CurIntensity - m_BaseIntensity) / DestIntensity);
+                    float ratio = Mathf.Min(1f, (m_CurIntensity - m_BaseIntensity) / (DestIntensity - m_BaseIntensity));
 
                     gameObject.GetComponentInChildren<Light>().intensity = m_CurIntensity;
-                    gameObject.GetComponentInChildren<MeshRenderer>().material.SetFloat("_Threshold", ratio);
+                    SetRatio(ratio);
                 }
                     
             }
