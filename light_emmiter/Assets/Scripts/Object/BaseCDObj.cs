@@ -11,6 +11,7 @@ public enum ObjectType
     Reflector,
     Receiver,
     EmmiterColorChanger,
+    AttractByLight,
 }
 
 public class BaseCDObj : MonoBehaviour {
